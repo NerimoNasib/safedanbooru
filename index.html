@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Danbooru 😭😭</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Safe Danbooru画像</h1>
+        <h3>Scroll through the latest DanBooru images!</h3>
+        <input id="searchInput" type="text" v-model="searchInput" placeholder="Search images...">
+        <div v-if="loadingImages" class="loading-screen">
+            <p>Loading images, please wait...</p>
+            <div class="loading-animation"></div>
+        </div>
+        <div v-else id="imageContainer" class="grid-container">
+            <div v-for="post in filteredPosts" :key="post.id" class="image-item">
+                <img :src="post.file_url" :alt="'Image ' + post.id" @click="openImage(post.file_url)">
+                <p>Artist: {{ post.tag_string_artist }}</p>
+            </div>
+        </div>
+        <div class="pagination">
+            <button id="left" @click="previousPage"><</button>
+            <input id="pageNumber" type="text" v-model="pageInput" @keyup.enter="goToPage">
+            <button id="right" @click="nextPage">></button>
+        </div>
+        <footer>
+            <p>お巡りさん、こいつでーす</p>
+        </footer>
+        <div class="modal" v-if="showModal" @click.self="closeModal">
+            <div class="modal-content">
+                <span class="close" @click="closeModal">&times;</span>
+                <img :src="fullImageUrl" :alt="'Full image ' + fullImageUrl">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.min.js"></script>
+    <script src="src/script.js"></script>
+</body>
+</html>
